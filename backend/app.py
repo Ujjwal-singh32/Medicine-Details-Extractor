@@ -82,17 +82,19 @@ def extract_text():
         response_en = model.generate_content(prompt_en)
         gemini_output_en = response_en.text.strip()
         print(gemini_output_en)
-        cleaned_en = re.sub(r"^```json\s*|\s*```$", "", gemini_output_en, flags=re.MULTILINE)
+        cleaned_en = re.sub(
+            r"^```json\s*|\s*```$", "", gemini_output_en, flags=re.MULTILINE
+        )
         medicines_en = json.loads(cleaned_en)
 
         # Step 2: Translate to multiple languages
         languages = {
-        "en": "English",
-        "hi": "Hindi",
-        "bn": "Bengali",
-        "ta": "Tamil",
-        "gu": "Gujarati"
-}
+            "en": "English",
+            "hi": "Hindi",
+            "bn": "Bengali",
+            "ta": "Tamil",
+            "gu": "Gujarati",
+        }
 
         translations = {}
         for lang_key, lang_name in languages.items():
@@ -105,13 +107,12 @@ def extract_text():
             {json.dumps(medicines_en, ensure_ascii=False)}
             """
             resp_lang = model.generate_content(prompt_translate)
-            cleaned_lang = re.sub(r"^```json\s*|\s*```$", "", resp_lang.text.strip(), flags=re.MULTILINE)
+            cleaned_lang = re.sub(
+                r"^```json\s*|\s*```$", "", resp_lang.text.strip(), flags=re.MULTILINE
+            )
             translations[lang_key] = json.loads(cleaned_lang)
 
-        return jsonify({
-            "extracted_text": extracted_text,
-            "medicines": translations
-        })
+        return jsonify({"extracted_text": extracted_text, "medicines": translations})
 
     except Exception as e:
         print("Error:", e)
@@ -119,4 +120,5 @@ def extract_text():
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port)
