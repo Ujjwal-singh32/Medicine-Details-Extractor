@@ -1,8 +1,7 @@
 from flask import Flask, request, jsonify
 from PIL import Image
 import io
-import numpy as np
-import easyocr
+import pytesseract  # new import
 import google.generativeai as genai
 import os
 import json
@@ -16,7 +15,7 @@ CORS(app)
 genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
 model = genai.GenerativeModel(model_name="models/gemini-2.0-flash")
 
-reader = easyocr.Reader(["en"])
+# No EasyOCR reader needed anymore
 
 
 @app.route("/extract-text", methods=["POST"])
@@ -31,11 +30,9 @@ def extract_text():
 
         image_bytes = file.read()
         image = Image.open(io.BytesIO(image_bytes)).convert("RGB")
-        img_np = np.array(image)
 
-        # OCR extraction
-        ocr_result = reader.readtext(img_np, detail=0)
-        extracted_text = "\n".join(ocr_result)
+        # OCR extraction using pytesseract
+        extracted_text = pytesseract.image_to_string(image)
         extracted_text = re.sub(r"[{}]", "", extracted_text)
 
         # Step 1: Get medicine details in English
@@ -120,5 +117,5 @@ def extract_text():
 
 
 if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 5000))
-    app.run(host="0.0.0.0", port=port)
+    port = int(os.environ.get("PORT", 5000))  # default to 5000 locally
+    app.run(host="0.0.0.0", port=port, debug=True)
