@@ -19,7 +19,9 @@ OCR_SPACE_API_KEY = os.getenv("OCR_SPACE_API_KEY")  # Your OCR.Space API key
 OCR_SPACE_URL = "https://api.ocr.space/parse/image"
 
 
-def compress_image_if_needed(image_bytes, max_size_bytes=1_048_576, max_width=1024, quality=75):
+def compress_image_if_needed(
+    image_bytes, max_size_bytes=1_048_576, max_width=1024, quality=75
+):
     """
     Compress the image bytes if size exceeds max_size_bytes.
     Resizes width to max_width maintaining aspect ratio.
@@ -43,6 +45,11 @@ def compress_image_if_needed(image_bytes, max_size_bytes=1_048_576, max_width=10
     compressed_bytes = compressed_io.read()
 
     return compressed_bytes
+
+
+@app.route("/", methods=["GET"])
+def home():
+    return jsonify({"message": "Server is running"}), 200
 
 
 @app.route("/extract-text", methods=["POST"])
@@ -74,7 +81,9 @@ def extract_text():
 
         ocr_result = ocr_response.json()
 
-        if not ocr_result.get("IsErroredOnProcessing") and ocr_result.get("ParsedResults"):
+        if not ocr_result.get("IsErroredOnProcessing") and ocr_result.get(
+            "ParsedResults"
+        ):
             ocr_text = ocr_result["ParsedResults"][0]["ParsedText"]
         else:
             return jsonify({"error": "OCR failed", "details": ocr_result}), 500
