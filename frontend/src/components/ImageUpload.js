@@ -67,14 +67,34 @@ export default function ImageUpload() {
     value && value.trim() ? value : "Not enough data";
 
   return (
-    <div style={{ maxWidth: 800, margin: "40px auto", padding: 30, backgroundColor: "#fff", borderRadius: 12, boxShadow: "0 4px 20px rgba(0,0,0,0.1)" }}>
-      <h2 style={{ textAlign: "center", marginBottom: 30, color: "#4a148c", fontWeight: "700" }}>
+    <div
+      style={{
+        maxWidth: 800,
+        margin: "40px auto",
+        padding: 30,
+        backgroundColor: "#fff",
+        borderRadius: 12,
+        boxShadow: "0 4px 20px rgba(0,0,0,0.1)",
+      }}
+    >
+      <h2
+        style={{
+          textAlign: "center",
+          marginBottom: 30,
+          color: "#4a148c",
+          fontWeight: "700",
+        }}
+      >
         Upload Medicine Image
       </h2>
 
       {previewUrl && (
         <div style={{ marginBottom: 20, textAlign: "center" }}>
-          <img src={previewUrl} alt="Preview" style={{ maxWidth: "100%", maxHeight: 300, borderRadius: 12 }} />
+          <img
+            src={previewUrl}
+            alt="Preview"
+            style={{ maxWidth: "100%", maxHeight: 300, borderRadius: 12 }}
+          />
         </div>
       )}
 
@@ -114,23 +134,20 @@ export default function ImageUpload() {
                   <th>Name</th>
                   <th>Dosage</th>
                   <th>Usage Instructions</th>
-                  <th>Frequency</th>
-                  <th>Expiry Date</th>
-                  <th>Manufacturer</th>
-                  <th>Mfg Date</th>
                   <th>Medicine Use</th>
                 </tr>
               </thead>
               <tbody>
                 {result.medicines[selectedLang]?.map((med, idx) => (
-                  <tr key={idx} style={{ backgroundColor: idx % 2 === 0 ? "#f8f5fc" : "#fff" }}>
+                  <tr
+                    key={idx}
+                    style={{
+                      backgroundColor: idx % 2 === 0 ? "#f8f5fc" : "#fff",
+                    }}
+                  >
                     <td>{displayValue(med.medicine_name)}</td>
                     <td>{displayValue(med.dosage)}</td>
                     <td>{displayValue(med.usage_instructions)}</td>
-                    <td>{displayValue(med.frequency)}</td>
-                    <td>{displayValue(med.expiry_date)}</td>
-                    <td>{displayValue(med.manufacturer)}</td>
-                    <td>{displayValue(med.manufacturing_date)}</td>
                     <td>{displayValue(med.medicine_use)}</td>
                   </tr>
                 ))}
