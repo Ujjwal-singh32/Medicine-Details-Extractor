@@ -11,12 +11,7 @@ __pycache__/
 .env
 
 # Ignore Node.js dependencies
-frontend/node_modules/
-
-# Optional: Ignore build files from frontend
-frontend/.next/
-frontend/dist/
-frontend/out/
+**/node_modules/
 
 # Ignore OS-specific files
 .DS_Store
