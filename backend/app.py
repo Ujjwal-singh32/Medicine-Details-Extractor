@@ -46,7 +46,7 @@ def compress_image_if_needed(
 
     return compressed_bytes
 
-
+#this is to check whether it is running or not
 @app.route("/", methods=["GET"])
 def home():
     return jsonify({"message": "Server is running"}), 200
